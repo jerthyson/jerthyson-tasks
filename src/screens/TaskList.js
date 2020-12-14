@@ -1,9 +1,21 @@
 import React,{ Component} from 'react'
-import {View,Text, ImageBackground, StyleSheet,FlatList,TouchableOpacity, Platform,} from 'react-native'
+import {
+    View,
+    Text,
+    ImageBackground,
+    StyleSheet,
+    FlatList,
+    TouchableOpacity,
+    Platform,
+    Alert
+} from 'react-native'
+
 import moment from 'moment'
 import 'moment/locale/pt-br'
+
 import TodayImage from '../../assets/imgs/today.jpg'
 import commonStyles from '../CommonStyles.js'
+
 import Task from '../components/Task'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import AddTask from './AddTask'
@@ -62,6 +74,25 @@ export default class TaskList extends Component{
 
         this.setState({ tasks }, this.filterTasks)
 
+    }
+
+    
+    /*ADICIONANDO TAREFAS*/
+    addTask = newTask => {
+        if(!newTask.desc || !newTask.desc.trim()) {
+            Alert.alert('Dados Inválidos', 'Descrição não informada!')
+            return 
+        }
+
+        const tasks = [...this.state.tasks]
+        tasks.push({
+            id: Math.random(),
+            desc: newTask.desc,
+            estimateAt: newTask.date,
+            doneAt: null
+        })
+
+        this.setState({ tasks, showAddTask: false }, this.filterTasks)
     }
 
     render(){
